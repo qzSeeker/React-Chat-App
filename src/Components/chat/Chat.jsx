@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import EmojiPicker from "emoji-picker-react";
 
 const Chat = () => {
     const [open, setOpen] = useState(false);
     const [text, setText] = useState("");
+
+    const endRef = useRef(null);
+
+    useEffect(() => {
+        endRef.current?.scrollIntoView({behavior: "smooth"});
+    },[]);
 
     const handleEmoji = (e) => {
         setText((prev) => prev + e.emoji);
@@ -59,7 +65,7 @@ const Chat = () => {
             <div className="w-3/5">
                 <p className="bg-blue-500 p-2 rounded-xl text-sm">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint
-                suscipit.
+                suscipit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum earum culpa porro quaerat, quo maiores?
                 </p>
                 <span className="text-xs">1 min ago</span>
             </div>
@@ -89,13 +95,14 @@ const Chat = () => {
                 <div className="">
                     <p className="bg-white/10 p-2 rounded-xl text-sm">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint
-                    suscipit iusto error beatae volup.
+                    suscipit iusto error beatae volup. Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae numquam exercitationem aliquid dolorum voluptate sequi est totam eos quas ducimus.
                     </p>
                 <span className="text-xs">1 min ago</span>
                 </div>
             </div>
             <div className="w-full relative flex justify-end">
             <div className="w-3/5">
+                <img className="rounded-xl mb-8" src="Details\joshua-reddekopp-SyYmXSDnJ54-unsplash.jpg" />
                 <p className="bg-blue-500 p-2 rounded-xl text-sm">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint
                 suscipit iusto error beatae voluptate ratione consectetur et
@@ -104,6 +111,7 @@ const Chat = () => {
                 <span className="text-xs">1 min ago</span>
             </div>
             </div>
+            <div ref={endRef}></div>
         </div>
 
             {/* bottom */}
