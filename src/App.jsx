@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-      <div className='h-full w-[80vw] flex py-10'>
+      <div className='h-full w-[85vw] flex py-10'>
         <List />
         <Chat />
         <Details />
