@@ -14,7 +14,7 @@ const ChatList = () => {
                         placeholder="search"
                     />
                 </div>
-                <button className="bg-white/10 transition-all ease-in hover:bg-white/15 p-2 rounded-full hover:border border-white/10">
+                <button className="bg-white/10 transition-all ease-in hover:bg-white/15 p-2 rounded-xl hover:border border-white/10">
                     <img
                         className="h-5"
                         src={add ? "List Icons/minus.png" : "List Icons/add.png"}
@@ -67,7 +67,7 @@ const ChatList = () => {
                     </div>
                 </div>
             </div>
-            {/* <AddUser /> */}
+            {add && <AddUser />}
         </div>
     );
 };
