@@ -1,9 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import EmojiPicker from "emoji-picker-react";
+import useUserStore from "../../lib/userStore";
 
 const Chat = () => {
     const [open, setOpen] = useState(false);
     const [text, setText] = useState("");
+    const {isLoading, currentUser} = useUserStore();
+
+    if (isLoading) return <div>Loading chat...</div>
 
     const endRef = useRef(null);
 
