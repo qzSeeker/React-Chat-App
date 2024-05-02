@@ -7,9 +7,8 @@ const useUserStore = create((set) => ({
     isLoading: true,
     fetchUserInfo: async (uid) => {
         if(!uid) return set({currentUser: null, isLoading: false});
-
         try {
-            const docRef = doc(db, "user", uid);
+            const docRef = doc(db, "users", uid);
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
@@ -22,6 +21,7 @@ const useUserStore = create((set) => ({
             console.log(error);
             set({currentUser: null, isLoading: false})
         }
+
     }
 }));
 

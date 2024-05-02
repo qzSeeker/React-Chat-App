@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { auth } from '../../lib/firebase';
 
 const Details = () => {
     const [open, setOpen] = useState(false);
@@ -67,7 +68,7 @@ const Details = () => {
                 </div>
                 <div className='grid gap-3'>
                     <button className='bg-red-600 hover:opacity-90 transition-all ease-in py-2 px-4 mt-10 rounded-xl'>Block user</button>
-                    <button className='bg-blue-500 hover:opacity-90 transition-all ease-in py-2 px-4 rounded-xl'>Logout</button>
+                    <button onClick={() => auth.signOut()} className='bg-blue-500 hover:opacity-90 transition-all ease-in py-2 px-4 rounded-xl'>Logout</button>
                 </div>
             </div>
         </div>

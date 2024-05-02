@@ -16,7 +16,7 @@ function App() {
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, (user) => {
       try {
-        fetchUserInfo(user.uid);
+        fetchUserInfo(user?.uid);
       } catch (err){
         toast.error(err.message);
       }
@@ -28,12 +28,12 @@ function App() {
 
   console.log('CurrentUser: ' + currentUser);
 
-  if (isLoading) return <div className="h-[10vh] w-[24vw] bg-white/10 flex justify-center items-center text-xl m-auto rounded-xl"><h1>Loading...</h1></div>
+  // if (isLoading) return <div className="h-[10vh] w-[24vw] bg-white/10 flex justify-center items-center text-xl m-auto rounded-xl"><h1>Loading...</h1></div>
 
   return (
     <>
       <div className="h-full w-[85vw] flex py-10">
-        {currentUser ? (
+        {isLoading ? <div className="h-[10vh] w-[24vw] bg-white/10 flex justify-center items-center text-xl m-auto rounded-xl"><h1>Loading...</h1></div> : currentUser ? (
           <>
             <List />
             <Chat />
