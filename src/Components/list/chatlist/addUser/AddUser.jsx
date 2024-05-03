@@ -20,8 +20,9 @@ const AddUser = () => {
 
             if (!querySnapShot.empty) {
                 setUser(querySnapShot.docs[0].data());
+            } else {
+                console.log("User not found!")
             }
-
         } catch (error) {
             console.log(error);
         }
@@ -39,15 +40,19 @@ const AddUser = () => {
                 messages: [],
             });
 
-            await updateDoc(doc(userChatsRef, user.id), {
-                chats: arrayUnion({
-                    chatId: newChatRef.id,
-                    lastMessage: "",
-                    receiverId: currentUser.id,
-                    updatedAt: Date.now(),
-                })
-            });
+            console.log(newChatRef.id);
 
+            const currentUserDoc = await getDoc(doc(userChatsRef, currentUser.id));
+            if (!currentUserDoc.exists) {
+                await setDoc(doc(userChatsRef, currentUser.id), {chats: [] });
+            }
+
+            if (user) {
+                const searchedUserDoc = await getDoc(doc(userChatsRef, user.id));
+                if (!searchedUserDoc.exists) {
+                    await setDoc(doc(userChatsRef, user.id), { chats: [] });
+                }
+            }
             await updateDoc(doc(userChatsRef, currentUser.id), {
                 chats: arrayUnion({
                     chatId: newChatRef.id,
@@ -57,6 +62,17 @@ const AddUser = () => {
                 })
             });
 
+            if (user) {
+            await updateDoc(doc(userChatsRef, user.id), {
+                chats: arrayUnion({
+                    chatId: newChatRef.id,
+                    lastMessage: "",
+                    receiverId: currentUser.id,
+                    updatedAt: Date.now(),
+                }),
+            });
+        }
+            console.log("Chat created and user chats update successfully!");
         } catch (error) {
             console.log(error);
         };
@@ -68,13 +84,15 @@ const AddUser = () => {
                 <input className="bg-white text-black rounded-xl px-2 py-3 outline-none" type="text" placeholder="Username" name="username" />
                 <button className="bg-blue-500 rounded-xl px-2 hover:opacity-80">Search</button>
             </form>
-            {user && <div className={"flex items-center justify-between"}>
-                <div className="flex items-center gap-3">
-                <img className="h-10 w-10 rounded-full" src={user.avatar || "List Icons/user-image-with-black-background.png"} />
-                <h1>{user.username}</h1>
-                </div>
+            {user && (
+                <div className={"flex items-center justify-between"}>
+                    <div className="flex items-center gap-3">
+                        <img className="h-10 w-10 rounded-full" src={user.avatar || "List Icons/user-image-with-black-background.png"} />
+                        <h1>{user.username}</h1>
+                    </div>
                 <button onClick={handleAdd} className="bg-blue-500 rounded-xl px-2 py-2 hover:opacity-80">Add User</button>
-            </div> }
+            </div>
+        )}
         </div>
     );
 };

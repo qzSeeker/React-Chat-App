@@ -11,9 +11,11 @@ const ChatList = () => {
     const { currentUser } = useUserStore();
 
     useEffect(() => {
-        const unSub = onSnapshot(doc(db, "userChats", currentUser.id), async (res) => {
-            const items = res.data().chats;
+        const unSub = onSnapshot(doc(db, "userchats", currentUser.id), async (res) => {
+            const items = res.data()?.chats;
 
+            if (!items) return;
+            
             const promises = items.map( async(item) => {
                 const userDocRef = doc(db, "users", item.receiverId);
                 const userDocSnap = await getDoc(userDocRef);
@@ -32,7 +34,6 @@ const ChatList = () => {
             unSub();
         };
     }, [currentUser.id])
-
 
     return (
         <div className="">
@@ -54,17 +55,17 @@ const ChatList = () => {
                 </button>
             </div>
 
-            <div className="grid gap-4 p-3 mt-6 border border-white/15 rounded-md m-2">
-                {chats.map((chat) => {
-                    <div className="flex gap-4" key={chat}>
-                    <img className="h-10" src="List Icons\user-image-with-black-background.png" />
-                    <div>
-                        <span>{currentUser.name}</span>
-                        <p className="text-sm">{chat.lastMessage}</p>
+            {chats?.map((chat) => { 
+                <div className="grid gap-4 p-3 mt-6 border border-white/15 rounded-md m-2">
+                        <div className="flex gap-4" key={chat.chatId}>
+                        <img className="h-10" src="List Icons\user-image-with-black-background.png" />
+                        <div>
+                            <span>{currentUser.name}</span>
+                            <p className="text-sm">{chat.lastMessage}</p>
+                        </div>
                     </div>
                 </div>
-                })}
-            </div>
+            })}
             {add && <AddUser />}
         </div>
     );
