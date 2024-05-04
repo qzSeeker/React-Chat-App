@@ -10,7 +10,9 @@ import { onAuthStateChanged } from "firebase/auth";
 import useUserStore from "./lib/userStore";
 import { toast } from "react-toastify";
 
+
 function App() {
+  
   const {currentUser, isLoading, fetchUserInfo} = useUserStore();
 
   useEffect(() => {
@@ -32,6 +34,7 @@ function App() {
 
   return (
     <>
+    {/* It's my birthday */}
       <div className="h-full w-[85vw] flex py-10">
         {isLoading ? <div className="h-[10vh] w-[24vw] bg-white/10 flex justify-center items-center text-xl m-auto rounded-xl"><h1>Loading...</h1></div> : currentUser ? (
           <>
