@@ -1,7 +1,7 @@
 import { arrayUnion, collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
 import React, { useState } from "react";
-import { db } from "../../../../lib/firebase";
-import useUserStore from "../../../../lib/userStore";
+import { db } from "../../../lib/firebase";
+import useUserStore from "../../../lib/userStore";
 
 const AddUser = () => {
     const [user, setUser] = useState(null);
@@ -29,6 +29,11 @@ const AddUser = () => {
     }
 
     const handleAdd = async () => {
+        if (!user) {
+            console.log("No user selected to add to chat.");
+            return;
+        }
+
         const chatRef = collection(db, "chats");
         const userChatsRef = collection(db, "chats");
 
@@ -40,19 +45,13 @@ const AddUser = () => {
                 messages: [],
             });
 
-            console.log(newChatRef.id);
+            console.log("New chat created with ID:", newChatRef.id);
 
-            const currentUserDoc = await getDoc(doc(userChatsRef, currentUser.id));
-            if (!currentUserDoc.exists) {
+            const currentUserChatsDoc = await getDoc(doc(userChatsRef, currentUser.id));
+            if (!currentUserChatsDoc.exists) {
                 await setDoc(doc(userChatsRef, currentUser.id), {chats: [] });
             }
 
-            if (user) {
-                const searchedUserDoc = await getDoc(doc(userChatsRef, user.id));
-                if (!searchedUserDoc.exists) {
-                    await setDoc(doc(userChatsRef, user.id), { chats: [] });
-                }
-            }
             await updateDoc(doc(userChatsRef, currentUser.id), {
                 chats: arrayUnion({
                     chatId: newChatRef.id,
@@ -62,7 +61,6 @@ const AddUser = () => {
                 })
             });
 
-            if (user) {
             await updateDoc(doc(userChatsRef, user.id), {
                 chats: arrayUnion({
                     chatId: newChatRef.id,
@@ -71,10 +69,9 @@ const AddUser = () => {
                     updatedAt: Date.now(),
                 }),
             });
-        }
             console.log("Chat created and user chats update successfully!");
         } catch (error) {
-            console.log(error);
+            console.log("Error adding user to chat:", error);
         };
     };
 

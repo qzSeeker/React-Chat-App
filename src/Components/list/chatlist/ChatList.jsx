@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import AddUser from "./addUser/AddUser";
 import useUserStore from "../../../lib/userStore";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../../lib/firebase";
+import AddUser from "../addUser/AddUser";
 
 const ChatList = () => {
     const [add, setAdd] = useState(false);
@@ -58,7 +58,7 @@ const ChatList = () => {
             {chats?.map((chat) => { 
                 <div className="grid gap-4 p-3 mt-6 border border-white/15 rounded-md m-2">
                         <div className="flex gap-4" key={chat.chatId}>
-                        <img className="h-10" src="List Icons\user-image-with-black-background.png" />
+                        <img className="h-10" src={chat.user.avatar || "List Icons/user-image-with-black-background.png"} />
                         <div>
                             <span>{currentUser.name}</span>
                             <p className="text-sm">{chat.lastMessage}</p>
@@ -66,7 +66,8 @@ const ChatList = () => {
                     </div>
                 </div>
             })}
-            {add && <AddUser />}
+            {add && <AddUser /> }
+            
         </div>
     );
 };
