@@ -7,7 +7,6 @@ import AddUser from "../addUser/AddUser";
 const ChatList = () => {
     const [add, setAdd] = useState(false);
     const [chats, setChats] = useState([]);
-
     const { currentUser } = useUserStore();
 
     useEffect(() => {
