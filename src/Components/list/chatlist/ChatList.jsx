@@ -3,11 +3,13 @@ import useUserStore from "../../../lib/userStore";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../../lib/firebase";
 import AddUser from "../addUser/AddUser";
+import useChatStore from "../../../lib/chatStore";
 
 const ChatList = () => {
     const [add, setAdd] = useState(false);
     const [chats, setChats] = useState([]);
     const { currentUser } = useUserStore();
+    const { chatId, changeChat } = useChatStore()
 
     useEffect(() => {
         const unSub = onSnapshot(doc(db, "userchats", currentUser.id), async (res) => {
@@ -15,7 +17,7 @@ const ChatList = () => {
 
             if (!items) return;
             
-            const promises = items.map( async(item) => {
+            const promises = items.map(async (item) => {
                 const userDocRef = doc(db, "users", item.receiverId);
                 const userDocSnap = await getDoc(userDocRef);
 
@@ -26,14 +28,17 @@ const ChatList = () => {
 
             const chatData = await Promise.all(promises);
 
-            setChats(chatData.sort((a,b) => b.updatedAt - a.updatedAt));
+            setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
         });
 
         return () => {
             unSub();
         };
-    }, [currentUser.id])
+    }, [currentUser.id]);
 
+    const handleSelect = async (chat) => {
+        changeChat(chat.chatId, chat.user);
+    }
     return (
         <div className="">
             <div className="flex items-center justify-between mt-8 px-2 gap-4">
@@ -54,17 +59,17 @@ const ChatList = () => {
                 </button>
             </div>
 
-            {chats?.map((chat) => { 
-                <div className="grid gap-4 p-3 mt-6 border border-white/15 rounded-md m-2">
-                        <div className="flex gap-4" key={chat.chatId}>
-                        <img className="h-10" src={chat.user.avatar || "List Icons/user-image-with-black-background.png"} />
+            {chats.map((chat) => (
+                <div className="grid gap-4 p-3 mt-6 border border-white/15 rounded-md m-2 cursor-pointer" key={chat.chatId} onClick={() => handleSelect(chat.chatId)}>
+                        <div className="flex gap-4">
+                        <img className="h-10 w-10 rounded-full" src={chat.user.avatar || "List Icons/user-image-with-black-background.png"} />
                         <div>
-                            <span>{currentUser.name}</span>
+                            <span>{chat.user.username}</span>
                             <p className="text-sm">{chat.lastMessage}</p>
                         </div>
                     </div>
                 </div>
-            })}
+            ))}
             {add && <AddUser /> }
             
         </div>

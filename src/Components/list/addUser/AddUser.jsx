@@ -35,10 +35,12 @@ const AddUser = () => {
         }
 
         const chatRef = collection(db, "chats");
-        const userChatsRef = collection(db, "chats");
+        const userChatsRef = collection(db, "userchats");
 
         try {
             const newChatRef = doc(chatRef);
+
+            console.log("New chat reference ID:", newChatRef.id);
 
             await setDoc(newChatRef, {
                 createdAt: serverTimestamp(),
@@ -52,6 +54,7 @@ const AddUser = () => {
                 await setDoc(doc(userChatsRef, currentUser.id), {chats: [] });
             }
 
+            console.log("Updating current user's chats...");
             await updateDoc(doc(userChatsRef, currentUser.id), {
                 chats: arrayUnion({
                     chatId: newChatRef.id,
@@ -61,6 +64,9 @@ const AddUser = () => {
                 })
             });
 
+            console.log("Current user's chats updates successfully.");
+
+            console.log("Updating selected user's chats...");
             await updateDoc(doc(userChatsRef, user.id), {
                 chats: arrayUnion({
                     chatId: newChatRef.id,
@@ -69,6 +75,8 @@ const AddUser = () => {
                     updatedAt: Date.now(),
                 }),
             });
+
+            console.log("Selected user's chats updated successfully.");
             console.log("Chat created and user chats update successfully!");
         } catch (error) {
             console.log("Error adding user to chat:", error);

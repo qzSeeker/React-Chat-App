@@ -9,11 +9,13 @@ import { auth } from "./lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import useUserStore from "./lib/userStore";
 import { toast } from "react-toastify";
+import useChatStore from "./lib/chatStore";
 
 
 function App() {
   
   const {currentUser, isLoading, fetchUserInfo} = useUserStore();
+  const { chatId } = useChatStore();
 
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, (user) => {
@@ -39,8 +41,8 @@ function App() {
         {isLoading ? <div className="h-[10vh] w-[24vw] bg-white/10 flex justify-center items-center text-xl m-auto rounded-xl"><h1>Loading...</h1></div> : currentUser ? (
           <>
             <List />
-            <Chat />
-            <Details />
+            {chatId &&<Chat />}
+            {chatId && <Details />}
           </>
         ) : (
           <Login />
