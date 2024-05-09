@@ -14,7 +14,7 @@ const UserInfo = () => {
                 </div>
             </div>
             <div className='px-3'>
-                <h1 className="text-xl">{currentUser.username}</h1>
+                <h1 className="text-sm">{currentUser.username}</h1>
             </div>
         </div>
     )

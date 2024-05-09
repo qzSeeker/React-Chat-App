@@ -11,7 +11,6 @@ import useUserStore from "./lib/userStore";
 import { toast } from "react-toastify";
 import useChatStore from "./lib/chatStore";
 
-
 function App() {
   
   const {currentUser, isLoading, fetchUserInfo} = useUserStore();
@@ -41,7 +40,7 @@ function App() {
         {isLoading ? <div className="h-[10vh] w-[24vw] bg-white/10 flex justify-center items-center text-xl m-auto rounded-xl"><h1>Loading...</h1></div> : currentUser ? (
           <>
             <List />
-            {chatId &&<Chat />}
+            {chatId && <Chat />}
             {chatId && <Details />}
           </>
         ) : (
