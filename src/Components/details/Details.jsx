@@ -1,8 +1,14 @@
 import React, { useState } from 'react'
-import { auth } from '../../lib/firebase';
+import { auth, db } from '../../lib/firebase';
+import useUserStore from '../../lib/userStore';
+import useChatStore from '../../lib/chatStore';
+import { arrayRemove, arrayUnion, doc, updateDoc } from 'firebase/firestore';
 
 const Details = () => {
     const [open, setOpen] = useState(false);
+    
+    const { chatId, user, isCurrentUserBlocked, isReceiverId, isReceiverBlocked, changeBlock } = useChatStore();
+    const { currentUser } = useUserStore();
 
     const handleOpen = () => {
         setOpen(!open);
@@ -11,11 +17,27 @@ const Details = () => {
     const handleChange = () => {
         
     }
+
+    const handleBlock = async () => {
+        if (!user) return;
+
+        const userDocRef = doc(db, "users", currentUser.id);
+
+        try {
+            
+            await updateDoc(userDocRef, {
+                blocked: isRecieverBlocked ? arrayRemove(user.id) : arrayUnion(user.id),
+            });
+            changeBlock();
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <div className='h-full w-[40vw] border border-white/20'>
             <div className='flex flex-col justify-center items-center mt-6 border-b border-white/15'>
-                <img className='h-18' src='List Icons\user-image-with-black-background.png' />
-                <h2 className='text-xl mt-2'>Qz Seeker</h2>
+                <img className='h-16 w-16 rounded-full' src={user?.avatar || 'List Icons/user-image-with-black-background.png'} />
+                <h2 className='text-xl mt-2'>{user?.username}</h2>
                 <p className='text-sm mb-6'>Lorem ipsum dolor sit amet consectetur</p>
             </div>
 
@@ -67,7 +89,9 @@ const Details = () => {
                     </div>
                 </div>
                 <div className='grid gap-3'>
-                    <button className='bg-red-600 hover:opacity-90 transition-all ease-in py-2 px-4 mt-10 rounded-xl'>Block user</button>
+                    <button onClick={handleBlock} className='bg-red-600 hover:opacity-90 transition-all ease-in py-2 px-4 mt-10 rounded-xl'>{
+                        isCurrentUserBlocked ? "You are blocked!" : isReceiverBlocked ? "User blocked!" : "Block user"
+                    }</button>
                     <button onClick={() => auth.signOut()} className='bg-blue-500 hover:opacity-90 transition-all ease-in py-2 px-4 rounded-xl'>Logout</button>
                 </div>
             </div>

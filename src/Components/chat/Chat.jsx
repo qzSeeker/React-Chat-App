@@ -21,7 +21,7 @@ const Chat = () => {
             url: "",
         });
 
-        const { chatId, user } = useChatStore();
+        const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } = useChatStore();
         const { currentUser } = useUserStore();
 
         const time = new Date().toLocaleString();
@@ -108,6 +108,7 @@ const Chat = () => {
                 file: null,
                 url: "",
             });
+            
             setText("");
         };
     return (
@@ -116,11 +117,11 @@ const Chat = () => {
         <div className="flex justify-between items-center bg-white/10 p-2 border-b border-white/15">
             <div className="flex gap-4 items-center">
             <img
-                className="h-10"
-                src="List Icons\user-image-with-black-background.png"
+                className="h-10 w-10 rounded-full"
+                src={user?.avatar || "List Icons/user-image-with-black-background.png"}
             />
             <div>
-                <span>Qz Seeker</span>
+                <span>{user?.username}</span>
                 <p className="text-sm">Last active {time}</p>
             </div>
             </div>
@@ -144,24 +145,24 @@ const Chat = () => {
         <div className="h-max overflow-y-auto will-change-scroll scroll-smooth p-6 flex flex-col gap-10 relative">
             {chat?.messages?.map((message) => (
             <div
-                className="w-full relative flex justify-end"
+                className={`w-full relative flex ${message.senderId === currentUser?.id ? "justify-end" : "justify-start"}`}
                 key={message?.createAt}
             >
-                <div className="w-3/5">
-                {message.img && (
-                    <img className="rounded-xl mb-8" src={message.img} alt="" />
-                )}
-                <p className="bg-blue-500 p-3 rounded-md text-sm w-max text-right">
-                    {message.text}
-                </p>
-                {/* <span className="text-xs">1 min ago</span> */}
+                <div className="flex flex-col">
+                    {message.img && (
+                        <img className="w-3/5 rounded-xl mb-8" src={message.img} alt="" />
+                    )}
+                    <p className={`${message.senderId === currentUser?.id ? "bg-blue-500" : "bg-black/15"} p-3 rounded-md text-sm w-max relativ`}>
+                        {message.text}
+                    </p>
+                    {/* <span className="text-xs">1 min ago</span> */}
                 </div>
             </div>
             ))}
             {img.url &&
             <div>
-                <div>
-                    <img src={img.url} alt="" />
+                <div className="w-3/5 hidden">
+                    <img className="rounded-xl mb-8" src={img.url} alt="" />
                 </div>
             </div>
             }
@@ -172,11 +173,11 @@ const Chat = () => {
         <div className="w-full flex justify-between items-center p-4 border-t border-white/15">
             <div className="flex items-center gap-3">
                 <label htmlFor="file">
-            <img
-                className="h-5 transition-all ease-in cursor-pointer hover:opacity-70"
-                src="Chat Icons\image.png"
-            />
-            </label>
+                <img
+                    className="h-5 transition-all ease-in cursor-pointer hover:opacity-70"
+                    src="Chat Icons\image.png"
+                />
+                </label>
             <input type="file" id="file" className="hidden" onChange={handleImg}/>
             <img
                 className="h-5 transition-all ease-in cursor-pointer hover:opacity-70"
@@ -190,10 +191,11 @@ const Chat = () => {
             <div>
             <input
                 value={text}
-                className="bg-white/10 hover:bg-white/15 transition-all ease-in rounded-xl w-96 h-12 px-4 outline-0 hover:border border-white/15"
+                className="bg-white/10 hover:bg-white/15 transition-all disabled:cursor-not-allowed ease-in rounded-xl w-96 h-12 px-4 outline-0 hover:border border-white/15"
                 type="text"
-                placeholder="Type a message..."
+                placeholder={(isCurrentUserBlocked || isReceiverBlocked) ? "You can't send messages..." : "Type a message..."}
                 onChange={(e) => setText(e.target.value)}
+                disabled={isCurrentUserBlocked || isReceiverBlocked}
             />
             </div>
             <div className="flex items-center gap-3">
@@ -207,8 +209,9 @@ const Chat = () => {
             />
             <img
                 src="Chat Icons\send.png"
-                className="h-5 transition-all ease-in cursor-pointer hover:opacity-70"
+                className="h-5 transition-all ease-in cursor-pointer hover:opacity-70 disabled:opacity-70 disabled:cursor-not-allowed"
                 onClick={handleSend}
+                disabled={isCurrentUserBlocked || isReceiverBlocked}
             />
             </div>
         </div>

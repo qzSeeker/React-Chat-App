@@ -84,10 +84,10 @@ const ChatList = () => {
             {chats.map((chat) => (
                 <div className={`${chat?.isSeen ? "bg-transparent" : "bg-blue-400"} grid gap-4 p-3 mt-6 border border-white/15 rounded-md m-2 cursor-pointer overflow-hidden`} key={chat.chatId} onClick={() => handleSelect(chat)}>
                         <div className={`flex gap-4 rounded-md p-2`}>
-                        <img className="h-10 w-10 rounded-full" src={chat.user.avatar || "List Icons/user-image-with-black-background.png"} />
-                        <div>
-                            <span>{chat.user.username}</span>
-                            <p className={` text-sm`} >{chat.lastMessage}</p>
+                        <img className="h-10 w-10 rounded-full" src={chat.user.blocked.includes(currentUser.id) ? "List Icons/user-image-with-black-background.png" : chat.user.avatar || "List Icons/user-image-with-black-background.png"} />
+                        <div className="">
+                            <span>{chat.user.blocked.includes(currentUser.id) ? "username" : chat.user.username}</span>
+                            <p className={` text-sm`} >{chat.user.blocked.includes(currentUser.id) ? "" : chat.lastMessage}</p>
                         </div>
                     </div>
                 </div>
