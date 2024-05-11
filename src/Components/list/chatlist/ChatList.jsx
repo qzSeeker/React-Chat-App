@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useUserStore from "../../../lib/userStore";
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../../lib/firebase";
 import AddUser from "../addUser/AddUser";
 import useChatStore from "../../../lib/chatStore";
@@ -9,11 +9,11 @@ const ChatList = () => {
     const [add, setAdd] = useState(false);
     const [chats, setChats] = useState([]);
     const { currentUser } = useUserStore();
-    const { chatId, changeChat } = useChatStore()
+    const { chatId, changeChat } = useChatStore();
 
     useEffect(() => {
         const unSub = onSnapshot(doc(db, "userchats", currentUser.id), async (res) => {
-            const items = res.data()?.chats;
+            const items = res.data().chats;
 
             if (!items) return;
             
@@ -37,8 +37,30 @@ const ChatList = () => {
     }, [currentUser.id]);
 
     const handleSelect = async (chat) => {
-        changeChat(chat.chatId, chat.user);
-    }
+        const userChats = chats.map((item) => {
+            const { user, ...rest } = item;
+            return rest;
+        });
+
+        const chatIndex = userChats.findIndex(
+            (item) => item.chatId === chat.chatId
+        );
+
+        userChats[chatIndex].isSeen = true;
+
+        const userChatsRef = doc(db, "userchats", currentUser.id);
+
+        try {
+            
+            await updateDoc(userChatsRef, {
+                chats: userChats,
+            });
+            changeChat(chat.chatId, chat.user)
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <div className="">
             <div className="flex items-center justify-between mt-8 px-2 gap-4">
@@ -60,18 +82,17 @@ const ChatList = () => {
             </div>
 
             {chats.map((chat) => (
-                <div className="grid gap-4 p-3 mt-6 border border-white/15 rounded-md m-2 cursor-pointer" key={chat.chatId} onClick={() => handleSelect(chat.chatId)}>
-                        <div className="flex gap-4">
+                <div className={`${chat?.isSeen ? "bg-transparent" : "bg-blue-400"} grid gap-4 p-3 mt-6 border border-white/15 rounded-md m-2 cursor-pointer overflow-hidden`} key={chat.chatId} onClick={() => handleSelect(chat)}>
+                        <div className={`flex gap-4 rounded-md p-2`}>
                         <img className="h-10 w-10 rounded-full" src={chat.user.avatar || "List Icons/user-image-with-black-background.png"} />
                         <div>
                             <span>{chat.user.username}</span>
-                            <p className="text-sm">{chat.lastMessage}</p>
+                            <p className={` text-sm`} >{chat.lastMessage}</p>
                         </div>
                     </div>
                 </div>
             ))}
             {add && <AddUser /> }
-            
         </div>
     );
 };
