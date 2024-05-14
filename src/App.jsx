@@ -10,6 +10,9 @@ import { onAuthStateChanged } from "firebase/auth";
 import useUserStore from "./lib/userStore";
 import { toast } from "react-toastify";
 import useChatStore from "./lib/chatStore";
+import { BrowserRouter, Navigate, Route, Router, Routes } from "react-router-dom";
+import Signup from "./Components/login/Signup";
+import Layout from "./Components/login/Layout";
 
 function App() {
   
@@ -31,8 +34,6 @@ function App() {
 
   console.log('CurrentUser: ' + currentUser);
 
-  // if (isLoading) return <div className="h-[10vh] w-[24vw] bg-white/10 flex justify-center items-center text-xl m-auto rounded-xl"><h1>Loading...</h1></div>
-
   return (
     <>
     {/* It's my birthday */}
@@ -44,7 +45,14 @@ function App() {
             {chatId && <Details />}
           </>
         ) : (
-          <Login />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Navigate to="/" />} />
+            </Routes>
+          <Layout />
+          </BrowserRouter>
         )}
         <Notification />
       </div>
