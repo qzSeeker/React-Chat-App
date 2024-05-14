@@ -37,8 +37,8 @@ function App() {
   return (
     <>
     {/* It's my birthday */}
-      <div className="h-full w-[85vw] flex py-10">
-        {isLoading ? <div className="h-[10vh] w-[24vw] bg-white/10 flex justify-center items-center text-xl m-auto rounded-xl"><h1>Loading...</h1></div> : currentUser ? (
+      <div className="h-full w-[85vw] md:flex py-10">
+        {isLoading ? <div className="h-[10vh] w-[24vw] bg-black text-white flex justify-center items-center text-xl m-auto rounded-xl"><h1>Loading...</h1></div> : currentUser ? (
           <>
             <List />
             {chatId && <Chat />}

@@ -38,7 +38,7 @@ const Details = () => {
 
 
     return (
-        <div className='h-full w-[40vw] border border-white/20'>
+        <div className='h-full w-[40vw] border border-black/25 bg-black text-white'>
             <div className='flex flex-col justify-center items-center mt-6 border-b border-white/15'>
                 <img className='h-16 w-16 rounded-full' src={user?.avatar || 'List Icons/user-image-with-black-background.png'} />
                 <h2 className='text-xl mt-2'>{isCurrentUserBlocked ? "username" : user.username}</h2>

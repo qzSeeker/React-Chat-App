@@ -4,9 +4,7 @@ import { ToastContainer } from 'react-toastify';
 const Notification = () => {
     return (
         <div className='h-full relative'>
-            <div className=''>
-            <ToastContainer />
-            </div>
+            <ToastContainer theme='dark' hideProgressBar />
         </div>
     )
 }

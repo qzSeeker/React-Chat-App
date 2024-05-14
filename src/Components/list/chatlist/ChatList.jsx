@@ -8,6 +8,7 @@ import useChatStore from "../../../lib/chatStore";
 const ChatList = () => {
     const [add, setAdd] = useState(false);
     const [chats, setChats] = useState([]);
+    const [input, setInput] = useState("");
     const { currentUser } = useUserStore();
     const { chatId, changeChat } = useChatStore();
 
@@ -61,8 +62,10 @@ const ChatList = () => {
         }
     };
 
+    const filteredChats = chats.filter(c => c.user.username.toLowerCase().includes(input.toLowerCase()))
+
     return (
-        <div className="">
+        <div className="text-white">
             <div className="flex items-center justify-between mt-8 px-2 gap-4">
                 <div className="flex items-center w-full p-2 transition-all ease-in bg-white/10 hover:bg-white/15 rounded-xl gap-3 overflow-hidden hover:border border-white/10">
                     <img className="h-5" src="List Icons\glass.png" />
@@ -70,6 +73,7 @@ const ChatList = () => {
                         className="bg-transparent border-none outline-0 text-sm"
                         type="text"
                         placeholder="search"
+                        onChange={(e) => setInput(e.target.value) }
                     />
                 </div>
                 <button className="bg-white/10 transition-all ease-in hover:bg-white/15 p-2 rounded-xl hover:border border-white/10">
@@ -81,7 +85,7 @@ const ChatList = () => {
                 </button>
             </div>
 
-            {chats.map((chat) => (
+            {filteredChats.map((chat) => (
                 <div className={`${chat?.isSeen ? "bg-transparent" : "bg-blue-400"} grid gap-4 p-3 mt-6 border border-white/15 rounded-md m-2 cursor-pointer overflow-hidden`} key={chat.chatId} onClick={() => handleSelect(chat)}>
                         <div className={`flex gap-4 rounded-md p-2`}>
                         <img className="h-10 w-10 rounded-full" src={chat.user.blocked.includes(currentUser.id) ? "List Icons/user-image-with-black-background.png" : chat.user.avatar || "List Icons/user-image-with-black-background.png"} />

@@ -16,15 +16,16 @@ const Chat = () => {
         const [chat, setChat] = useState();
         const [open, setOpen] = useState(false);
         const [text, setText] = useState("");
-        const [img, setImg] = useState({
-            file: null,
-            url: "",
-        });
+        // const [img, setImg] = useState({
+        //     file: null,
+        //     url: "",
+        // });
+        const [viewingImage, setViewingImage] = useState(false);
+        const [selectedImg, setSelectedImg] = useState(null);
 
         const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } = useChatStore();
         const { currentUser } = useUserStore();
 
-        const time = new Date().toLocaleString();
         const endRef = useRef(null);
 
         useEffect(() => {
@@ -48,20 +49,27 @@ const Chat = () => {
         };
 
         const handleImg = (e) => {
-            setImg({
-            file: e.target.files[0],
-            url: URL.createObjectURL(e.target.files[0]),
-            });
+            if (e.target.files[0]) { // Check if a file is selected
+                setSelectedImg(e.target.files[0]);
+                setViewingImage(true);
+            } else {
+                console.error("No image selected");
+            }
         };
 
         const handleSend = async () => {
-            if (!text === "") return;
+            if (!text && !selectedImg) return;
 
-            let imgUrl = null;
+            if (viewingImage) {
+                setViewingImage(false);
+                return;
+            }
 
             try {
-                if (img.file) {
-                    imgUrl = await upload(img.file);
+                let imgUrl = null;
+                
+                if (selectedImg) {
+                    imgUrl = await upload(selectedImg);
                 }
 
                 const newMessage = {
@@ -100,30 +108,28 @@ const Chat = () => {
                 });
                 }
             });
-            } catch (error) {
-            console.log(error);
-            }
 
-            setImg({
-                file: null,
-                url: "",
-            });
-            
+            // setImg({
+            //     file: null,
+            //     url: "",
+            // });
+            setSelectedImg(null);
             setText("");
+
+            } catch (error) {
+            console.log("Error sending message:", error);
+            }
         };
     return (
-        <div className="w-full flex flex-col justify-between">
+        <div className="w-full flex flex-col justify-between text-white">
         {/* top */}
-        <div className="flex justify-between items-center bg-white/10 p-2 border-b border-white/15">
+        <div className="flex justify-between items-center bg-black p-2 border-b border-black/25">
             <div className="flex gap-4 items-center">
             <img
-                className="h-10 w-10 rounded-full"
+                className="h-10 w-10 rounded-full border-2 border-gray-500"
                 src={user?.avatar || "List Icons/user-image-with-black-background.png"}
             />
-            <div>
-                <span>{user?.username}</span>
-                <p className="text-sm">Last active {time}</p>
-            </div>
+                <span>{isCurrentUserBlocked ? "username" : user.username}</span>
             </div>
             <div className="flex gap-4">
             <img
@@ -150,7 +156,9 @@ const Chat = () => {
             >
                 <div className="flex flex-col">
                     {message.img && (
+                        <>
                         <img className="w-3/5 rounded-xl mb-8" src={message.img} alt="" />
+                        </>
                     )}
                     <p className={`${message.senderId === currentUser?.id ? "bg-blue-500" : "bg-black/15"} p-3 rounded-md text-sm w-max relativ`}>
                         {message.text}
@@ -159,26 +167,25 @@ const Chat = () => {
                 </div>
             </div>
             ))}
-            {img.url &&
-            <div>
-                <div className="w-3/5 hidden">
-                    <img className="rounded-xl mb-8" src={img.url} alt="" />
+            {selectedImg &&
+                <div className="w-3/5">
+                    <img className="rounded-xl mb-8" src={URL.createObjectURL(selectedImg)} alt="" />
                 </div>
-            </div>
             }
             <div ref={endRef}></div>
         </div>
 
         {/* bottom */}
-        <div className="w-full flex justify-between items-center p-4 border-t border-white/15">
+        <div className="w-full flex justify-between items-center p-4 border-t border-white/15 bg-black">
             <div className="flex items-center gap-3">
+                {text || selectedImg ? <span>Sending image...</span> : null}
                 <label htmlFor="file">
                 <img
                     className="h-5 transition-all ease-in cursor-pointer hover:opacity-70"
                     src="Chat Icons\image.png"
                 />
                 </label>
-            <input type="file" id="file" className="hidden" onChange={handleImg}/>
+            <input type="file" id="file" className="hidden disabled:cursor-none" onChange={handleImg} disabled={isCurrentUserBlocked || isReceiverBlocked} />
             <img
                 className="h-5 transition-all ease-in cursor-pointer hover:opacity-70"
                 src="Chat Icons\photo-camera.png"
