@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import Chat from "./Components/chat/Chat";
-import Details from "./Components/details/Details";
 import List from "./Components/list/List";
 import Login from "./Components/login/Login";
 import Notification from "./Components/notification/Notification";
@@ -10,20 +9,27 @@ import { onAuthStateChanged } from "firebase/auth";
 import useUserStore from "./lib/userStore";
 import { toast } from "react-toastify";
 import useChatStore from "./lib/chatStore";
-import { BrowserRouter, Navigate, Route, Router, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Router,
+  Routes,
+} from "react-router-dom";
 import Signup from "./Components/login/Signup";
 import Layout from "./Components/login/Layout";
+import Home from "./Components/Home/Home";
+import HomeLayout from "./Components/Home-Layout/Layout";
 
 function App() {
-  
-  const {currentUser, isLoading, fetchUserInfo} = useUserStore();
+  const { currentUser, isLoading, fetchUserInfo } = useUserStore();
   const { chatId } = useChatStore();
 
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, (user) => {
       try {
         fetchUserInfo(user?.uid);
-      } catch (err){
+      } catch (err) {
         toast.error(err.message);
       }
     });
@@ -32,17 +38,30 @@ function App() {
     };
   }, [fetchUserInfo]);
 
-  console.log('CurrentUser: ' + currentUser);
+  console.log("CurrentUser: " + currentUser);
+  if (isLoading) {
+    return (
+    <div className="flex justify-center items-center">
+      <h1 className="bg-black px-20 py-8 text-white text-xl rounded-xl">Loading...</h1>
+    </div>
 
+    )
+  }
   return (
     <>
-    {/* It's my birthday */}
-      <div className="h-full w-[85vw] md:flex py-10">
-        {isLoading ? <div className="h-[10vh] w-[24vw] bg-black text-white flex justify-center items-center text-xl m-auto rounded-xl"><h1>Loading...</h1></div> : currentUser ? (
+      {/* It's my birthday */}
+      <div className="absolute">
+        {currentUser ? (
           <>
-            <List />
-            {chatId && <Chat />}
-            {chatId && <Details />}
+            <BrowserRouter>
+              <HomeLayout />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/list" element={<List />} />
+                <Route path="/chat" element={chatId && <Chat />} />
+                <Route path="/details" element={chatId && <Details />} />
+              </Routes>
+            </BrowserRouter>
           </>
         ) : (
           <BrowserRouter>
@@ -51,7 +70,7 @@ function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Navigate to="/" />} />
             </Routes>
-          <Layout />
+            <Layout />
           </BrowserRouter>
         )}
         <Notification />
