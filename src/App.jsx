@@ -17,9 +17,9 @@ import {
   Routes,
 } from "react-router-dom";
 import Signup from "./Components/login/Signup";
-import Layout from "./Components/login/Layout";
 import Home from "./Components/Home/Home";
-import HomeLayout from "./Components/Home-Layout/Layout";
+import MainLayout from "./Components/Layout/MainLayout";
+import Details from "./Components/Details/Details";
 
 function App() {
   const { currentUser, isLoading, fetchUserInfo } = useUserStore();
@@ -38,43 +38,47 @@ function App() {
     };
   }, [fetchUserInfo]);
 
-  console.log("CurrentUser: " + currentUser);
   if (isLoading) {
     return (
-    <div className="flex justify-center items-center">
-      <h1 className="bg-black px-20 py-8 text-white text-xl rounded-xl">Loading...</h1>
-    </div>
-
-    )
+      <div className="flex justify-center items-center">
+        <h1 className="bg-black px-20 py-8 text-white text-xl rounded-xl">
+          Loading...
+        </h1>
+      </div>
+    );
   }
   return (
     <>
       {/* It's my birthday */}
-      <div className="absolute">
-        {currentUser ? (
-          <>
-            <BrowserRouter>
-              <HomeLayout />
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/list" element={<List />} />
-                <Route path="/chat" element={chatId && <Chat />} />
-                <Route path="/details" element={chatId && <Details />} />
-              </Routes>
-            </BrowserRouter>
-          </>
-        ) : (
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/login" element={<Navigate to="/" />} />
-            </Routes>
-            <Layout />
-          </BrowserRouter>
-        )}
+      <BrowserRouter>
+        <MainLayout>
+          <Routes>
+            {currentUser ? (
+              <>
+                <Route path="/" element={<Navigate to="/home" />} />
+                <Route path="/home" element={<Home />}>
+                  <Route path="list" element={<List />} />
+                  <Route
+                    path="/chat"
+                    element={chatId ? <Chat /> : <Navigate to="/home" />}
+                  />
+                  <Route
+                    path="/details"
+                    element={chatId ? <Details /> : <Navigate to="/home" />}
+                  />
+                </Route>
+              </>
+            ) : (
+              <>
+                <Route path="/" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/login" element={<Navigate to="/" />} />
+              </>
+            )}
+          </Routes>
+        </MainLayout>
         <Notification />
-      </div>
+      </BrowserRouter>
     </>
   );
 }
