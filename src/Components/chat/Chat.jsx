@@ -122,7 +122,7 @@ const Chat = ({ handleDetails }) => {
         };
 
     return (
-        <div className="w-full xl:flex flex-col justify-between text-white rounded-x-md">
+        <div className="h-full w-full xl:flex flex-col justify-between text-white rounded-x-md z-20">
         {/* top */}
         <div className="flex justify-between items-center border bg-white/25 backdrop-blur-sm p-3 rounded-x-md">
             <div className="flex gap-4 items-center">
@@ -151,7 +151,7 @@ const Chat = ({ handleDetails }) => {
         </div>
 
         {/* center */}
-        <div className="h-full overflow-y-auto will-change-scroll border-x bg-white/10 backdrop-blur-sm scroll-smooth p-6 flex flex-col gap-10 relative">
+        <div className="w-full h-max overflow-y-auto will-change-scroll border-x bg-white/10 backdrop-blur-sm scroll-smooth p-6 flex flex-col gap-10 relative">
             {chat?.messages?.map((message) => (
             <div
                 className={`w-full relative flex ${message.senderId === currentUser?.id ? "justify-end" : "justify-start"}`}
@@ -181,7 +181,7 @@ const Chat = ({ handleDetails }) => {
         {/* bottom */}
         <div className="w-full flex justify-between items-center p-4 border bg-white/25 backdrop-blur-sm rounded-x-md">
             <div className="flex items-center gap-3">
-                {text || selectedImg ? <span>Sending image...</span> : null}
+                {text || selectedImg ? <span className="">Sending image...</span> : null}
                 <label htmlFor="file">
                 <img
                     className="h-5 transition-all ease-in cursor-pointer hover:opacity-70"
@@ -198,31 +198,31 @@ const Chat = ({ handleDetails }) => {
                 src="Chat Icons\mic .png"
             />
             </div>
-            <div>
-            <input
-                value={text}
-                className="bg-white/15 placeholder-white hover:bg-white/15 transition-all disabled:cursor-not-allowed ease-in rounded-md w-96 h-12 px-4 outline-0 hover:border"
-                type="text"
-                placeholder={(isCurrentUserBlocked || isReceiverBlocked) ? "You can't send messages..." : "Type a message..."}
-                onChange={(e) => setText(e.target.value)}
-                disabled={isCurrentUserBlocked || isReceiverBlocked}
-            />
-            </div>
-            <div className="flex items-center gap-3">
-            <div className="absolute right-4 bottom-20">
-                <EmojiPicker open={open} onEmojiClick={handleEmoji} />
-            </div>
-            <img
-                src="Chat Icons\laugh.png"
-                className="h-5 transition-all ease-in cursor-pointer hover:opacity-70"
-                onClick={() => setOpen((prev) => !prev)}
-            />
-            <img
-                src="Chat Icons\send.png"
-                className="h-5 transition-all ease-in cursor-pointer hover:opacity-70 disabled:opacity-70 disabled:cursor-not-allowed"
-                onClick={handleSend}
-                disabled={isCurrentUserBlocked || isReceiverBlocked}
-            />
+            <div className="flex bg-white/15 placeholder-white hover:bg-white/15 w-max h-max px-6 py-4 rounded-full gap-4">
+                <input
+                    value={text}
+                    className="bg-transparent placeholder-white transition-all disabled:cursor-not-allowed ease-in outline-0"
+                    type="text"
+                    placeholder={(isCurrentUserBlocked || isReceiverBlocked) ? "You can't send messages..." : "Type a message..."}
+                    onChange={(e) => setText(e.target.value)}
+                    disabled={isCurrentUserBlocked || isReceiverBlocked}
+                />
+                <div className="flex items-center gap-3">
+                    <div className="absolute right-4 bottom-20">
+                        <EmojiPicker open={open} onEmojiClick={handleEmoji} />
+                    </div>
+                    <img
+                        src="Chat Icons\laugh.png"
+                        className="h-5 transition-all ease-in cursor-pointer hover:opacity-70"
+                        onClick={() => setOpen((prev) => !prev)}
+                        />
+                    <img
+                        src="Chat Icons\send.png"
+                        className="h-5 transition-all ease-in cursor-pointer hover:opacity-70 disabled:opacity-70 disabled:cursor-not-allowed"
+                        onClick={handleSend}
+                        disabled={isCurrentUserBlocked || isReceiverBlocked}
+                        />
+                </div>
             </div>
         </div>
         </div>

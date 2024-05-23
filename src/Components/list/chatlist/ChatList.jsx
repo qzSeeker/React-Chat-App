@@ -65,31 +65,32 @@ const ChatList = () => {
     const filteredChats = chats.filter(c => c.user.username.toLowerCase().includes(input.toLowerCase()))
 
     return (
-        <div className="text-white">
-            <div className="flex items-center justify-between mt-8 px-2 gap-4">
-                <div className="flex items-center w-full p-2 transition-all ease-in bg-white/10 hover:bg-white/15 rounded-xl gap-3 overflow-hidden hover:border border-white/10">
+        <div className="text-white relative bottom-28">
+            <div className="flex items-center justify-between mt-8 px-3 gap-4 bg-white/25 py-2 rounded-md">
+                <div className="flex items-center transition-all ease-in gap-3 overflow-hidden">
                     <img className="h-5" src="List Icons\glass.png" />
                     <input
-                        className="bg-transparent border-none outline-0 text-sm"
+                        className="bg-transparent border-none p-1 placeholder-white outline-0 text-sm"
                         type="text"
                         placeholder="search"
                         onChange={(e) => setInput(e.target.value) }
                     />
                 </div>
-                <button className="bg-white/10 transition-all ease-in hover:bg-white/15 p-2 rounded-xl hover:border border-white/10">
+                <button className="bg-black flex items-center justify-center gap-1 transition-all ease-in p-3 rounded-md">
                     <img
-                        className="h-5"
+                        className="h-4"
                         src={add ? "List Icons/minus.png" : "List Icons/add.png"}
                         onClick={() => setAdd((prev) => !prev)}
                     />
+                    <p className="text-xs">Add User</p>
                 </button>
             </div>
 
             {filteredChats.map((chat) => (
-                <div className={`${chat?.isSeen ? "bg-transparent" : "bg-blue-400"} grid gap-4 p-3 mt-6 border border-white/15 rounded-md m-2 cursor-pointer overflow-hidden`} key={chat.chatId} onClick={() => handleSelect(chat)}>
+                <div className={`${chat?.isSeen ? "bg-white/10" : "bg-black"} backdrop-blur-sm grid gap-4 p-3 mt-6 border rounded-md cursor-pointer overflow-hidden`} key={chat.chatId} onClick={() => handleSelect(chat)}>
                         <div className={`flex gap-4 rounded-md p-2`}>
                         <img className="h-10 w-10 rounded-full" src={chat.user.blocked.includes(currentUser.id) ? "List Icons/user-image-with-black-background.png" : chat.user.avatar || "List Icons/user-image-with-black-background.png"} />
-                        <div className="">
+                        <div className="text-white">
                             <span>{chat.user.blocked.includes(currentUser.id) ? "username" : chat.user.username}</span>
                             <p className={` text-sm`} >{chat.user.blocked.includes(currentUser.id) ? "" : chat.lastMessage}</p>
                         </div>

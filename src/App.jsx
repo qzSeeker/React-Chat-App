@@ -1,29 +1,29 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import Chat from "./Components/chat/Chat";
-import List from "./Components/list/List";
-import Login from "./Components/login/Login";
-import Notification from "./Components/notification/Notification";
-import { auth } from "./lib/firebase";
+import Notification from "./Components/SignUpPage/notification/Notification";
 import { onAuthStateChanged } from "firebase/auth";
 import useUserStore from "./lib/userStore";
 import { toast } from "react-toastify";
-import useChatStore from "./lib/chatStore";
 import {
   BrowserRouter,
   Navigate,
   Route,
-  Router,
   Routes,
 } from "react-router-dom";
-import Signup from "./Components/login/Signup";
-import Home from "./Components/Home/Home";
-import MainLayout from "./Components/Layout/MainLayout";
+import Login from "./Components/SignUpPage/login/Login";
+import Signup from "./Components/SignUpPage/login/Signup";
+import { auth } from "./lib/firebase";
+import Layout from "./Components/SignUpPage/login/Layout";
+import useChatStore from "./lib/chatStore";
+import Chat from "./Components/chat/Chat";
+import List from "./Components/list/List";
 import Details from "./Components/Details/Details";
+
 
 function App() {
   const { currentUser, isLoading, fetchUserInfo } = useUserStore();
   const { chatId } = useChatStore();
+  const [details, setDetails] = useState(false);
 
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, (user) => {
@@ -41,44 +41,45 @@ function App() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center">
-        <h1 className="bg-black px-20 py-8 text-white text-xl rounded-xl">
+        <h1 className="bg-white/10 backdrop-blur-sm border px-20 py-8 text-white text-xl rounded-xl">
           Loading...
         </h1>
       </div>
     );
   }
+
+    const handleDetails = () => {
+        setDetails(prevDetails => !prevDetails);
+    };
+
   return (
     <>
       {/* It's my birthday */}
-      <BrowserRouter>
-        <MainLayout>
-          <Routes>
-            {currentUser ? (
+      <div className="h-full w-[95vw] flex py-10">
+          {currentUser ? (
               <>
-                <Route path="/" element={<Navigate to="/home" />} />
-                <Route path="/home" element={<Home />}>
-                  <Route path="list" element={<List />} />
-                  <Route
-                    path="/chat"
-                    element={chatId ? <Chat /> : <Navigate to="/home" />}
-                  />
-                  <Route
-                    path="/details"
-                    element={chatId ? <Details /> : <Navigate to="/home" />}
-                  />
-                </Route>
+                <List />
+                {chatId && <Chat handleDetails={handleDetails} />}
+                {chatId && <Details details={details} />}
+                <div className="text-white flex flex-col gap-4 text place-self-center fixed right-0 left-0 ml-40">
+                  <p className="text-6xl font-semibold">Welcome to <span>Chat-Lee</span></p>
+                  <p className="text-3xl font-semibold">Here you can add your friends and chat with them!</p>
+                </div>
               </>
             ) : (
               <>
-                <Route path="/" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/login" element={<Navigate to="/" />} />
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Login />} />
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/login" element={<Navigate to="/" />} />
+                </Routes>
+                  <Layout />
+                  </BrowserRouter>
+              <Notification />
               </>
             )}
-          </Routes>
-        </MainLayout>
-        <Notification />
-      </BrowserRouter>
+            </div>
     </>
   );
 }

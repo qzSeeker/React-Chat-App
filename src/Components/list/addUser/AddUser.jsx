@@ -84,18 +84,18 @@ const AddUser = () => {
     };
 
     return (
-        <div className="absolute text-sm left-0 right-0 top-0 bottom-0 p-8 h-max w-max m-auto bg-black/60 z-20 rounded-xl flex flex-col gap-8">
+        <div className="absolute text-sm left-0 right-0 top-0 bottom-0 p-8 h-max w-max m-auto bg-white/15 border z-20 rounded-xl flex flex-col gap-8">
             <form className="flex gap-3" onSubmit={handleSearch}>
-                <input className="bg-white text-black rounded-xl px-2 py-3 outline-none" type="text" placeholder="Username" name="username" />
-                <button className="bg-blue-500 rounded-xl px-2 hover:opacity-80">Search</button>
+                <input className="bg-transparent border backdrop-blur-sm text-white rounded-md px-2 py-3 outline-none placeholder-white" type="text" placeholder="Username" name="username" />
+                <button className="bg-black rounded-md p-3 hover:opacity-80">Search</button>
             </form>
             {user && (
-                <div className={"flex items-center justify-between"}>
+                <div className={"flex items-center justify-between bg-white/15 backdrop-blur-sm p-2 rounded-md border"}>
                     <div className="flex items-center gap-3">
                         <img className="h-10 w-10 rounded-full" src={user.avatar || "List Icons/user-image-with-black-background.png"} />
                         <h1>{user.username}</h1>
                     </div>
-                <button onClick={handleAdd} className="bg-blue-500 rounded-xl px-2 py-2 hover:opacity-80">Add User</button>
+                <button onClick={handleAdd} className="bg-black rounded-md px-3 py-3 hover:opacity-80">Add User</button>
             </div>
         )}
         </div>

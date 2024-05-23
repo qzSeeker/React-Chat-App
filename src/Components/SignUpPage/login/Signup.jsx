@@ -2,7 +2,9 @@ import { doc, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { Link } from 'react-router-dom';
-import { db } from '../../../lib/firebase';
+import { auth, db } from '../../../lib/firebase';
+import { toast } from 'react-toastify';
+import upload from '../../../lib/upload';
 
 function Signup() {
 
@@ -57,12 +59,12 @@ function Signup() {
                 <div className="bg-white/15 backdrop-blur-sm py-10 sm:px-10 flex flex-col justify-center items-center border-2 rounded-md">
                     <img className="h-16 w-max mb-12" src="src\assets\App-Logo.png" />
                     <form className="flex flex-col gap-4 sm:w-64" onSubmit={handleRegister}>
-                    {/* <label
-                        className="flex items-center gap-4 underline cursor-pointer"
+                    <label
+                        className="flex items-center gap-4 text-white underline cursor-pointer"
                         htmlFor="file"
                     >
                     <img
-                    className="h-14 rounded-full w-14 bg-black"
+                    className="h-12 w-12 rounded-full"
                     src={
                         avatar.url || "List Icons/user-image-with-black-background.png"
                         }
@@ -74,21 +76,21 @@ function Signup() {
                         id="file"
                         className="hidden"
                         onChange={handleAvatar}
-                    /> */}
+                    />
                     <input
-                        className="bg-black/10 outline-none hover:border border-black/25 transition-all ease-in h-10 w-full px-2 rounded-md"
+                        className="bg-black/10 outline-none hover:border placeholder-white transition-all ease-in h-10 w-full px-2 rounded-md"
                         type="text"
                         placeholder="Username"
                         name="username"
                     />
                     <input
-                        className="bg-black/10 outline-none hover:border border-black/25 transition-all ease-in h-10 w-full px-2 rounded-md"
+                        className="bg-black/10 outline-none hover:border placeholder-white transition-all ease-in h-10 w-full px-2 rounded-md"
                         type="email"
                         placeholder="Email"
                         name="email"
                     />
                     <input
-                        className="bg-black/10 outline-none hover:border border-black/25 transition-all ease-in h-10 w-full px-2 rounded-md"
+                        className="bg-black/10 outline-none hover:border placeholder-white transition-all ease-in h-10 w-full px-2 rounded-md"
                         type="password"
                         placeholder="Password"
                         name="password"

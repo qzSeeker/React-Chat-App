@@ -27,7 +27,7 @@ const Login = () => {
     };
 
     return (
-        <div className="h-full w-full flex justify-center items-center flex-col gap-6">
+        <div className="h-full w-full flex flex-col justify-center items-center gap-6">
         {/* login */}
             <h1 className="text-2xl sm:text-4xl md:text-5xl text-center text-white font-semibold relative bottom-10">Welcome back - buddy!!</h1>
         <div className="grid grid-cols gap-4 w-max">
@@ -35,13 +35,13 @@ const Login = () => {
                 <img className="h-16 w-max mb-12" src="src\assets\App-Logo.png" />
                 <form onSubmit={handleLogin} className="flex flex-col gap-4 sm:w-64">
                     <input
-                    className="bg-black/10 outline-none hover:border text-white border-black/25 transition-all ease-in h-10 w-full px-2 rounded-md"
+                    className="bg-black/10 outline-none hover:border text-white placeholder-white transition-all ease-in h-10 w-full px-2 rounded-md"
                     type="email"
                     placeholder="Email"
                     name="email"
                     />
                     <input
-                    className="bg-black/10 text-black outline-none hover:border border-black/25 transition-all ease-in h-10 w-full px-2 rounded-md"
+                    className="bg-black/10 text-black outline-none hover:border placeholder-white transition-all ease-in h-10 w-full px-2 rounded-md"
                     type="password"
                     placeholder="Password"
                     name="password"
