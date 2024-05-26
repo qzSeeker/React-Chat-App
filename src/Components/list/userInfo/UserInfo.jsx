@@ -4,17 +4,16 @@ const UserInfo = () => {
     const { currentUser } = useUserStore();
 
     return (
-        <div>
-            <div className='flex justify-between items-center p-3'>
-                    <img className='h-10 w-10 rounded-full' src={currentUser.avatar || 'List Icons/user-image-with-black-background.png'} />
-                <div className='flex gap-4'>
-                    <img className='h-5 transition-all ease-in cursor-pointer hover:opacity-70' src='List Icons\more.png' />
-                    <img className='h-5 transition-all ease-in cursor-pointer hover:opacity-70' src='List Icons\video-camera.png' />
-                    <img className='h-5 transition-all ease-in cursor-pointer hover:opacity-70' src='List Icons\edit.png' />
-                </div>
+        <div className="flex flex-col gap-4">
+            <div className='flex justify-between items-center'>
+                <h1 className="text-white">{currentUser.username}</h1>
+                    <img className='h-4 rotate-90 transition-all ease-in cursor-pointer hover:opacity-70' src='List Icons\more.png' />
             </div>
-            <div className='px-3'>
-                <h1 className="text-sm text-white">{currentUser.username}</h1>
+            <div className='flex justify-between items-center'>
+                <img className='h-20 w-20 rounded-full' src={currentUser.avatar || 'List Icons/user-image-with-black-background.png'} />
+                    <div className="bg-white/25 p-3 hover:opacity-80 cursor-pointer text-xs rounded-md font-semibold text-white">
+                        Edit profile
+                    </div>
             </div>
         </div>
     )
