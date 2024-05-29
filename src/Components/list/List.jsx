@@ -6,7 +6,7 @@ import { auth } from '../../lib/firebase';
 const List = () => {
     
     return (
-        <div className='h-full p-4 grid z-20 min-w-96 border bg-white/10 backdrop-blur-sm rounded-x-md'>
+        <div className='h-full p-4 grid z-20 min-w-80 border bg-white/10 backdrop-blur-sm rounded-x-md'>
             <UserInfo />
             <ChatList/>
             <div className=''>
