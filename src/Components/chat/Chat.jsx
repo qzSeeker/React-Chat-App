@@ -122,10 +122,10 @@ const Chat = ({ handleDetails }) => {
         };
 
     return (
-        <div className="h-full bg-blue-400 w-full flex-col justify-between text-white rounded-x-md z-20">
+        <div className="h-full bg-blue-400 w-full flex-col justify-between text-white rounded-x-md z-20 overflow-hidden">
 
             {/* top */}
-            <div className="flex justify-between items-center border bg-white/25 backdrop-blur-sm p-3 rounded-x-md">
+            <div className="w-full flex justify-between items-center border bg-white/25 backdrop-blur-sm p-3 rounded-x-md">
                 <div className="flex gap-4 items-center">
                 <img
                     className="h-10 w-10 rounded-full"
@@ -152,7 +152,7 @@ const Chat = ({ handleDetails }) => {
             </div>
 
             {/* center */}
-            <div className="w-full overflow-y-scroll border-x bg-white/10 backdrop-blur-sm scroll-smooth p-6 flex flex-col gap-10 relative">
+            <div className="w-full h-full overflow-y-scroll border-x bg-white/10 backdrop-blur-sm scroll-smooth p-6 flex flex-col gap-10 relative">
                 {chat?.messages?.map((message) => (
                 <div
                     className={`w-full relative flex ${message.senderId === currentUser?.id ? "justify-end" : "justify-start"}`}
@@ -180,7 +180,7 @@ const Chat = ({ handleDetails }) => {
             </div>
 
             {/* bottom */}
-            <div className="w-full flex justify-between items-center p-4 border bg-white/25 backdrop-blur-sm rounded-x-md ">
+            <div className="w-full flex justify-between items-center p-3 border bg-white/25 backdrop-blur-sm rounded-x-md ">
                 <div className="flex items-center gap-3">
                     {text || selectedImg ? <span className="">Sending image...</span> : null}
                     <label htmlFor="file">

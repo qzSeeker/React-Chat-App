@@ -76,13 +76,13 @@ const ChatList = () => {
                         onChange={(e) => setInput(e.target.value) }
                     />
                 </div>
-                <button className="bg-black flex items-center justify-center gap-1 transition-all ease-in p-3 rounded-md">
+                <button className="bg-black hover:opacity-90 flex items-center justify-center gap-1 transition-all ease-in p-3 rounded-md">
                     <img
                         className="h-4"
                         src={add ? "List Icons/minus.png" : "List Icons/add.png"}
                         onClick={() => setAdd((prev) => !prev)}
                     />
-                    <p className="text-xs">Add User</p>
+                    {/* <p className="text-xs">Add User</p> */}
                 </button>
             </div>
 
