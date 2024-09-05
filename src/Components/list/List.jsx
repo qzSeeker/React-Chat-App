@@ -1,19 +1,20 @@
-import React from 'react'
-import UserInfo from './userInfo/UserInfo'
-import ChatList from './chatlist/ChatList'
-import { auth } from '../../lib/firebase';
+import React from "react";
+import ChatList from "./chatlist/ChatList";
+import { motion } from "framer-motion";
 
-const List = () => {
-    
+const List = ({ users }) => {
     return (
-        <div className='h-full p-4 grid z-20 min-w-80 border bg-white/10 backdrop-blur-sm rounded-x-md'>
-            <UserInfo />
-            <ChatList/>
-            <div className=''>
-                <button onClick={() => auth.signOut()} className='bg-black text-white w-full hover:opacity-90 transition-all ease-in py-2 px-4 rounded-md'>Logout</button>
-            </div>
-        </div>
-    )
+        users && (
+        <motion.div
+            className="h-screen min-h-[20rem] w-max bg-[#11131f] md:flex flex-col justify-between border-r absolute md:left-24 border-gray-500 z-30"
+            initial={{ x: "-30%" }}
+            animate={{ x: "0%" }}
+            transition={{ duration: 0.3 }}
+        >
+            <ChatList />
+        </motion.div>
+        )
+    );
 };
 
 export default List;

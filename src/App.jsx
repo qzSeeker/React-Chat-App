@@ -1,29 +1,26 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import List from "./Components/list/List";
 import Notification from "./Components/SignUpPage/notification/Notification";
 import { onAuthStateChanged } from "firebase/auth";
 import useUserStore from "./lib/userStore";
 import { toast } from "react-toastify";
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Login from "./Components/SignUpPage/login/Login";
 import Signup from "./Components/SignUpPage/login/Signup";
 import { auth } from "./lib/firebase";
 import Layout from "./Components/SignUpPage/login/Layout";
 import useChatStore from "./lib/chatStore";
 import Chat from "./Components/chat/Chat";
-import List from "./Components/list/List";
 import Details from "./Components/Details/Details";
-
+import SideBar from "./Components/ui/SideBar";
+import IntractPage from "./Components/ui/LandingPage/IntractPage";
 
 function App() {
   const { currentUser, isLoading, fetchUserInfo } = useUserStore();
   const { chatId } = useChatStore();
   const [details, setDetails] = useState(false);
+  const [users, setUsers] = useState(false);
 
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, (user) => {
@@ -40,48 +37,51 @@ function App() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center">
-        <h1 className="bg-white/10 backdrop-blur-sm border px-20 py-8 text-white text-xl rounded-xl">
+      <div className="flex justify-center items-center h-screen w-full">
+        <h1 className="bg-white/15 backdrop-blur-sm border px-20 py-8 text-xl rounded-xl">
           Loading...
         </h1>
       </div>
     );
   }
 
-    const handleDetails = () => {
-        setDetails(prevDetails => !prevDetails);
-    };
+  const handleDetails = () => {
+    setDetails((prevDetails) => !prevDetails);
+  };
+
+  const handleUsers = () => {
+    setUsers((prevUsers) => !prevUsers);
+  };
 
   return (
-    <>
-      {/* It's my birthday */}
-      <div className="h-full w-[95vw] flex py-10">
-          {currentUser ? (
-              <>
-                <List />
-                {chatId && <Chat handleDetails={handleDetails} />}
-                {chatId && <Details details={details} />}
-                <div className="text-white flex flex-col gap-4 text place-self-center fixed right-0 left-0 ml-40">
-                  <p className="text-6xl font-semibold">Welcome to <span>Chat-Lee</span></p>
-                  <p className="text-3xl font-semibold">Here you can add your friends and chat with them!</p>
+    <BrowserRouter>
+      <div className="app-container">
+        <Routes>
+          <Route path="/" element={<IntractPage />} />
+            <Route path="/" element={<Layout />}>
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          </Route>
+          <Route
+            path="/app"
+            element={
+              currentUser ? (
+                <div className="main-app-content">
+                  <SideBar handleUsers={handleUsers}/>
+                  <List users={users} />
+                  {chatId && <Chat handleDetails={handleDetails} details={details} />}
+                  {chatId && <Details handleDetails={handleDetails} details={details} />}
                 </div>
-              </>
-            ) : (
-              <>
-              <BrowserRouter>
-                <Routes>
-                  <Route path="/" element={<Login />} />
-                  <Route path="/signup" element={<Signup />} />
-                  <Route path="/login" element={<Navigate to="/" />} />
-                </Routes>
-                  <Layout />
-                  </BrowserRouter>
-              <Notification />
-              </>
-            )}
-            </div>
-    </>
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+        <Notification />
+      </div>
+    </BrowserRouter>
   );
 }
-
 export default App;

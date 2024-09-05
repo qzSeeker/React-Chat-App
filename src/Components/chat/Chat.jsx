@@ -11,6 +11,7 @@ import {
     import useChatStore from "../../lib/chatStore";
 import useUserStore from "../../lib/userStore";
 import upload from "../../lib/upload";
+import { IconCamera, IconListDetails, IconMicrophone, IconMoodSing, IconPhone, IconPhoto, IconSend, IconVideo } from "@tabler/icons-react";
 
 const Chat = ({ handleDetails }) => {
         const [chat, setChat] = useState();
@@ -40,7 +41,7 @@ const Chat = ({ handleDetails }) => {
 
         useEffect(() => {
             endRef.current?.scrollIntoView({ behavior: "smooth" });
-        }, []);
+        }, [text]);
 
 
         const handleEmoji = (e) => {
@@ -122,10 +123,9 @@ const Chat = ({ handleDetails }) => {
         };
 
     return (
-        <div className="h-full bg-blue-400 w-full flex-col justify-between text-white rounded-x-md z-20 overflow-hidden">
-
+        <div className="bg-[#151726] h-screen w-full relative">
             {/* top */}
-            <div className="w-full flex justify-between items-center border bg-white/25 backdrop-blur-sm p-3 rounded-x-md">
+            <div className="flex justify-between items-center p-5 border-b border-gray-500">
                 <div className="flex gap-4 items-center">
                 <img
                     className="h-10 w-10 rounded-full"
@@ -134,99 +134,86 @@ const Chat = ({ handleDetails }) => {
                     <span>{isCurrentUserBlocked ? "username" : user.username}</span>
                 </div>
                 <div className="flex gap-4">
-                <img
-                    className="h-5 transition-all ease-in cursor-pointer hover:opacity-70"
-                    src="Chat Icons\phone-call.png"
+                <IconPhone
+                    className="h-6 w-6 flex-shrink-0 dark:text-gray-400 dark:hover:text-gray-500 text-gray-600 hover:text-gray-500 transition-all ease-in duration-200 cursor-pointer"
                 />
-                <img
-                    className="h-5 transition-all ease-in cursor-pointer hover:opacity-70"
-                    src="List Icons\video-camera.png"
+                <IconVideo
+                    className="h-6 w-6 flex-shrink-0 dark:text-gray-400 dark:hover:text-gray-500 text-gray-600 hover:text-gray-500 transition-all ease-in duration-200 cursor-pointer"
                 />
-                <img
-                    className="h-5 transition-all ease-in cursor-pointer hover:opacity-70"
-                    src="Chat Icons\info.png"
+                <IconListDetails
+                    className="h-6 w-6 flex-shrink-0 dark:text-gray-400 dark:hover:text-gray-500 text-gray-600 hover:text-gray-500 transition-all ease-in duration-200 cursor-pointer"
                     onClick={handleDetails}
-
                 />
                 </div>
             </div>
 
             {/* center */}
-            <div className="w-full h-full overflow-y-scroll border-x bg-white/10 backdrop-blur-sm scroll-smooth p-6 flex flex-col gap-10 relative">
+            <div className="overflow-y-auto h-[calc(100%-8rem)]">
                 {chat?.messages?.map((message) => (
                 <div
-                    className={`w-full relative flex ${message.senderId === currentUser?.id ? "justify-end" : "justify-start"}`}
+                    className={`flex ${message.senderId === currentUser?.id ? "justify-end" : "justify-start"}`}
                     key={message?.createAt}
                 >
                     <div className="flex flex-col">
                         {message.img && (
                             <>
-                            <img className="w-3/5 rounded-xl mb-8" src={message.img} alt="" />
+                            <img className="w-[20rem] rounded-xl m-4" src={message.img} alt="" />
                             </>
                         )}
-                        <p className={`${message.senderId === currentUser?.id ? "bg-black" : "bg-white/25"} p-3 rounded-md text-sm w-max relative`}>
+                        <p className={`${message.senderId === currentUser?.id ? "bg-gray-600 text-white" : "bg-[#20232e]"} p-3 mx-6 my-4 rounded-md text-sm w-max max-w-48 relative text-balance whitespace-normal`}>
                             {message.text}
                         </p>
                         {/* <span className="text-xs">1 min ago</span> */}
                     </div>
+                    {/* {selectedImg &&
+                            <img className={`${message.senderId === currentUser?.id ? "" : "" } rounded-xl mb-8 h-18 w-18`} src={URL.createObjectURL(selectedImg)} alt="" />
+                    } */}
                 </div>
                 ))}
-                {selectedImg &&
-                    <div className="w-3/5">
-                        <img className="rounded-xl mb-8" src={URL.createObjectURL(selectedImg)} alt="" />
-                    </div>
-                }
-                <div ref={endRef}></div>
+                {/* <div className="h-32 w-max bg-transparent"></div> */}
+                <div ref={endRef} className="h-32 scroll-smooth"></div>
             </div>
 
             {/* bottom */}
-            <div className="w-full flex justify-between items-center p-3 border bg-white/25 backdrop-blur-sm rounded-x-md ">
-                <div className="flex items-center gap-3">
-                    {text || selectedImg ? <span className="">Sending image...</span> : null}
-                    <label htmlFor="file">
-                    <img
-                        className="h-5 transition-all ease-in cursor-pointer hover:opacity-70"
-                        src="Chat Icons\image.png"
-                    />
-                    </label>
-                <input type="file" id="file" className="hidden disabled:cursor-none" onChange={handleImg} disabled={isCurrentUserBlocked || isReceiverBlocked} />
-                <img
-                    className="h-5 transition-all ease-in cursor-pointer hover:opacity-70"
-                    src="Chat Icons\photo-camera.png"
-                />
-                <img
-                    className="h-5 transition-all ease-in cursor-pointer hover:opacity-70"
-                    src="Chat Icons\mic .png"
-                />
-                </div>
-                <div className="flex bg-white/15 placeholder-white hover:bg-white/15 w-max h-max px-6 py-4 rounded-full gap-4">
-                    <input
+            {/* <div className="absolute"> */}
+                <div className="flex flex-col justify-between items-center gap-3 p-5 border-t border-gray-500 absolute md:bottom-0 bottom-16 w-full bg-[#151726] z-20 ">
+                    {/* {(text || selectedImg) && <span className="text-white">Sending image...</span>} */}
+                    <div className="flex gap-2">
+                        <label htmlFor="file" className="flex items-center gap-3">
+                            <IconPhoto className="h-6 w-6 flex-shrink-0 dark:text-gray-400 dark:hover:text-gray-500 text-gray-600 hover:text-gray-500 transition-all ease-in duration-200 cursor-pointer"/>
+                            <input type="file" id="file" className="hidden disabled:cursor-none" onChange={handleImg} disabled={isCurrentUserBlocked || isReceiverBlocked} />
+                        </label>
+                        <IconCamera className="h-6 w-6 flex-shrink-0 dark:text-gray-400 dark:hover:text-gray-500 text-gray-600 hover:text-gray-500 transition-all ease-in duration-200 cursor-pointer"/>
+                        <IconMicrophone className="h-6 w-6 flex-shrink-0 dark:text-gray-400 dark:hover:text-gray-500 text-gray-600 hover:text-gray-500 transition-all ease-in duration-200 cursor-pointer"/>
+                    </div>
+                    <div className="flex flex-1 bg-[#20232e] placeholder-white hover:opacity-90 w-max h-max px-6 py-4 rounded-full gap-4">
+                        <input
                         value={text}
-                        className="bg-transparent placeholder-white transition-all disabled:cursor-not-allowed ease-in outline-0"
+                        className="bg-transparent placeholder-gray-400 placeholder-opacity-80 transition-all disabled:cursor-not-allowed ease-in outline-0 text-white flex-1"
                         type="text"
-                        placeholder={(isCurrentUserBlocked || isReceiverBlocked) ? "You can't send messages..." : "Type a message..."}
+                        placeholder={(isCurrentUserBlocked || isReceiverBlocked) ? "You can't send messages..." : "Start a message"}
                         onChange={(e) => setText(e.target.value)}
                         disabled={isCurrentUserBlocked || isReceiverBlocked}
-                    />
-                    <div className="flex items-center gap-3">
-                        <div className="absolute right-4 bottom-20">
-                            <EmojiPicker open={open} onEmojiClick={handleEmoji} />
-                        </div>
-                        <img
-                            src="Chat Icons\laugh.png"
-                            className="h-5 transition-all ease-in cursor-pointer hover:opacity-70"
+                        />
+                        <div className="flex items-center gap-3">
+                        <IconMoodSing
+                            className="h-6 w-6 flex-shrink-0 dark:text-gray-400 dark:hover:text-gray-500 text-gray-600 hover:text-gray-500 transition-all ease-in duration-200 cursor-pointer"
                             onClick={() => setOpen((prev) => !prev)}
-                            />
-                        <img
-                            src="Chat Icons\send.png"
-                            className="h-5 transition-all ease-in cursor-pointer hover:opacity-70 disabled:opacity-70 disabled:cursor-not-allowed"
+                        />
+                        <IconSend
+                            className="disabled:opacity-70 disabled:cursor-not-allowed h-6 w-6 flex-shrink-0 dark:text-gray-400 dark:hover:text-gray-500 text-gray-600 hover:text-gray-500 transition-all ease-in duration-200 cursor-pointer"
                             onClick={handleSend}
                             disabled={isCurrentUserBlocked || isReceiverBlocked}
-                            />
+                        />
+                        </div>
                     </div>
                 </div>
-            </div>
-            
+            {/* </div> */}
+            {open && (
+                <div className="absolute right-4 bottom-20">
+                <EmojiPicker onEmojiClick={handleEmoji} />
+                </div>
+            )}
         </div>
     );
 };

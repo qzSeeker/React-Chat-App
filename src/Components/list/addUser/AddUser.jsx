@@ -84,18 +84,18 @@ const AddUser = () => {
     };
 
     return (
-        <div className="absolute text-sm left-0 right-0 top-0 bottom-0 p-8 h-max w-max m-auto bg-white/15 border z-20 rounded-xl flex flex-col gap-8">
+        <div className="absolute text-sm left-0 right-0 top-0 bottom-0 p-8 h-max w-max m-auto shadow-md shadow-[#0d0f18] bg-[#20232e] border border-gray-500 z-20 rounded-xl flex flex-col gap-8">
             <form className="flex gap-3" onSubmit={handleSearch}>
-                <input className="bg-transparent border backdrop-blur-sm text-white rounded-md px-2 py-3 outline-none placeholder-white" type="text" placeholder="Username" name="username" />
-                <button className="bg-black rounded-md p-3 hover:opacity-80">Search</button>
+                <input className="bg-transparent border border-gray-500 backdrop-blur-sm text-white rounded-lg px-2 py-3 outline-none placeholder-white placeholder-opacity-80" type="text" placeholder="Username" name="username" />
+                <button className="bg-[#0d0f18] rounded-md p-3 hover:opacity-80">Search</button>
             </form>
             {user && (
-                <div className={"flex items-center justify-between bg-white/15 backdrop-blur-sm p-2 rounded-md border"}>
+                <div className={"flex items-center justify-between bg-[#0d0f18] p-2 rounded-lg border border-gray-500"}>
                     <div className="flex items-center gap-3">
-                        <img className="h-10 w-10 rounded-full" src={user.avatar || "List Icons/user-image-with-black-background.png"} />
+                        <img className="h-10 w-10 rounded-full border border-gray-500" src={user.avatar || "List Icons/user-image-with-black-background.png"} />
                         <h1>{user.username}</h1>
                     </div>
-                <button onClick={handleAdd} className="bg-black rounded-md px-3 py-3 hover:opacity-80">Add User</button>
+                <button onClick={handleAdd} className="bg-[#20232e] rounded-md p-2 hover:opacity-80 transition-all ease-in duration-150">Add User</button>
             </div>
         )}
         </div>

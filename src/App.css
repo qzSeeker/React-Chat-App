@@ -3,27 +3,35 @@
   padding: 0;
   box-sizing: border-box;
 }
-
 #root {
-  background: linear-gradient(-45deg, #4238d3, #9553d6, #ce5bc1, #3bbc7b);
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
-  color: #000;
+  background: #151726;
+  color: #fff;
   height: 100dvh;
   width: 100dvw;
-  display: flex;
-  justify-content: center;
-  /* color: white; */
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+body {
+  background-color: #0d0f18;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-app-content {
+  flex: 1;
+  display: flex;
+}
+
+/* Adjust IntractPage component styles */
+.intract-page {
+  min-height: 100vh;
+  /* Add any other styles for IntractPage */
 }

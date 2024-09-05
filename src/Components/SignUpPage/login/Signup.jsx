@@ -53,11 +53,11 @@ function Signup() {
         }
     };
     return (
-        <div className="h-full w-full flex justify-center items-center flex-col gap-6">
+        <div className="h-screen w-full flex bg-[#04001E] justify-center items-center flex-col gap-6">
             <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold text-center text-white relative bottom-10">Create an Account</h1>
         <div className='grid grid-cols gap-4 w-max'>
-                <div className="bg-white/15 backdrop-blur-sm py-10 sm:px-10 flex flex-col justify-center items-center border-2 rounded-md">
-                    <img className="h-16 w-max mb-12" src="src\assets\App-Logo.png" />
+                <div className="py-10 sm:px-10 flex flex-col justify-center items-center border border-gray-400 rounded-lg bg-gray-600">
+                    <img className="h-16 w-max mb-12 rounded-full" src="src\assets\ifi-1.png" />
                     <form className="flex flex-col gap-4 sm:w-64" onSubmit={handleRegister}>
                     <label
                         className="flex items-center gap-4 text-white underline cursor-pointer"
@@ -78,34 +78,34 @@ function Signup() {
                         onChange={handleAvatar}
                     />
                     <input
-                        className="bg-black/10 outline-none hover:border placeholder-white transition-all ease-in h-10 w-full px-2 rounded-md"
+                        className="bg-[#20232e] text-sm outline-none placeholder-gray-400 transition-all ease-in h-10 w-full px-2 rounded-md"
                         type="text"
                         placeholder="Username"
                         name="username"
                     />
                     <input
-                        className="bg-black/10 outline-none hover:border placeholder-white transition-all ease-in h-10 w-full px-2 rounded-md"
+                        className="bg-[#20232e] text-sm outline-none placeholder-gray-400 transition-all ease-in h-10 w-full px-2 rounded-md"
                         type="email"
                         placeholder="Email"
                         name="email"
                     />
                     <input
-                        className="bg-black/10 outline-none hover:border placeholder-white transition-all ease-in h-10 w-full px-2 rounded-md"
+                        className="bg-[#20232e] text-sm outline-none placeholder-gary-400 transition-all ease-in h-10 w-full px-2 rounded-md"
                         type="password"
                         placeholder="Password"
                         name="password"
                     />
                     <button
                         disabled={loading}
-                        className="bg-black text-white font-semibold py-2 px-4 mt-2 rounded-md hover:opacity-80 transition-all ease-in disabled:cursor-wait disabled:opacity-80"
+                        className="bg-[#0d0f18] text-sm text-white font-semibold py-2 px-4 mt-2 rounded-md hover:opacity-90 transition-all ease-in disabled:cursor-wait disabled:opacity-80"
                     >
                         {loading ? "Loading" : "Sign Up"}
                     </button>
                     </form>
                 </div>
-            <div className="text-white border-2 bg-white/15 backdrop-blur-sm rounded-md px-12 py-6 flex text-sm gap-2 justify-center">
+            <div className="text-white border border-gray-400 bg-gray-600 rounded-lg px-12 py-6 flex text-sm gap-2 justify-center">
                 <h1>Have an account?</h1>
-                <button className='text-black font-semibold underline'><Link to="/login">LogIn</Link></button>
+                <button className='font-semibold underline'><Link to="/login">LogIn</Link></button>
             </div>
         </div>
         </div> 
