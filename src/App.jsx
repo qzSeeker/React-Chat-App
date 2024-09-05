@@ -14,7 +14,7 @@ import useChatStore from "./lib/chatStore";
 import Chat from "./Components/chat/Chat";
 import SideBar from "./Components/ui/SideBar";
 import IntractPage from "./Components/ui/LandingPage/IntractPage";
-import Details from "./Components/Details/Details";
+import Details from "./Components/Detail/Details";
 import { ThreeDots } from "react-loader-spinner";
 
 function App() {
