@@ -15,6 +15,7 @@ import Chat from "./Components/chat/Chat";
 import SideBar from "./Components/ui/SideBar";
 import IntractPage from "./Components/ui/LandingPage/IntractPage";
 import Details from "./Components/Details/Details";
+import { ThreeDots } from "react-loader-spinner";
 
 function App() {
   const { currentUser, isLoading, fetchUserInfo } = useUserStore();
@@ -38,9 +39,16 @@ function App() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen w-full">
-        <h1 className="bg-white/15 backdrop-blur-sm border px-20 py-8 text-xl rounded-xl">
-          Loading...
-        </h1>
+        <ThreeDots
+        visible={true}
+        height="80"
+        width="80"
+        color="#0440de"
+        radius="9"
+        ariaLabel="three-dots-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+        />
       </div>
     );
   }
