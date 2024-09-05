@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { auth, db } from '../../lib/firebase';
+import React, { useState } from 'react';
+import { db } from '../../lib/firebase';
 import useUserStore from '../../lib/userStore';
 import useChatStore from '../../lib/chatStore';
 import { arrayRemove, arrayUnion, doc, updateDoc } from 'firebase/firestore';
@@ -7,11 +7,10 @@ import { IconLayoutSidebarRightCollapse } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 
 const Details = ({ details, handleDetails }) => {
-    // if (!details) return null;
 
     const [open, setOpen] = useState(false);
     
-    const { chatId, user, isCurrentUserBlocked, isReceiverId, changeBlock } = useChatStore();
+    const { user, isCurrentUserBlocked, changeBlock } = useChatStore();
     let { isReceiverBlocked } = useChatStore();
     const { currentUser } = useUserStore();
 

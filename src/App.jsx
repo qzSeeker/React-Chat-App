@@ -12,7 +12,7 @@ import { auth } from "./lib/firebase";
 import Layout from "./Components/SignUpPage/login/Layout";
 import useChatStore from "./lib/chatStore";
 import Chat from "./Components/chat/Chat";
-import Details from "./Components/Details/Details";
+import Details from "./Components/Details/Details.jsx";
 import SideBar from "./Components/ui/SideBar";
 import IntractPage from "./Components/ui/LandingPage/IntractPage";
 
